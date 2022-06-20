@@ -48,7 +48,7 @@ const registration = async (req, res) => {
                 email: user.email,
                 username: user.username,
                 phone: user.phone,
-                gender:user.gender,
+                gender: user.gender,
                 password: hash
             });
 
@@ -56,8 +56,34 @@ const registration = async (req, res) => {
             res.json({ error: "Registrattion cannot be finished" });
         })
 
-
         res.json(res.statusCode)
+    }
+
+}
+
+
+
+
+const login = async (req, res) => {
+
+    const loginDetails = req.body;
+    const finduser = await Users.findOne({ where: { email: loginDetails.email } });
+
+    if (!finduser) {
+        res.json({ error: "User doesnt exist" });
+    } else {
+
+        let passcomp = await bcrypt.compare(loginDetails.password, finduser.password);
+
+        if (!passcomp) {
+            res.json({ error: "invalid Credentials" });
+        } else {
+            const user = await Users.findOne({ where: { id: finduser.id }, attributes: { exclude: ["password"] } });
+            //to generate Token
+            const accessToken = sign({ email: user.email, id: user.id }, "secret", { expiresIn: '60m' });
+            res.json({ token: accessToken, user }); //then you send the JWT token to the frontend as response when detail is verify
+        }
+
     }
 
 }
@@ -74,6 +100,10 @@ const registration = async (req, res) => {
 
 
 
+
+
+
 module.exports = {
-    registration
+    registration,
+    login
 }

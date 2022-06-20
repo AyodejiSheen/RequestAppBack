@@ -13,6 +13,7 @@ const {ValidateToken} = require('../middleswares/midtest')
 
 
 router.post('/', ValidateToken, usersController.registration )  //this route handle registration
+router.post('/login', ValidateToken, usersController.login )  //this route handle registration
 
 
 
