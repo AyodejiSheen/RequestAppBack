@@ -1,9 +1,12 @@
 const express = require('express')
 const cors = require('cors'); //to allow access from the frontend
 const dotenv = require('dotenv');
-
-
 dotenv.config({path: './config/config.env'});  //to have access to the enviroment variables
+
+//to be able to read json format from post request
+app.use(express.json());
+
+app.use(cors()); //to allow access from the frontend
 
 
 
@@ -24,9 +27,7 @@ const db = require('./models')
 
 
 
-//to be able to read json format from post request
-app.use(express.json());
-app.use(cors()); //to allow access from the frontend
+
 
 
 
