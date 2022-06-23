@@ -2,9 +2,7 @@
 const express = require('express')
 const cors = require('cors'); //to allow access from the frontend
 const app = express();  //an instance of express.
-app.use(cors({
-    origin:'https://requestappserver.herokuapp.com/'
-})); //to allow access from the frontend
+app.use(cors()); //to allow access from the frontend
 
 
 
