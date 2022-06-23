@@ -4,7 +4,11 @@ const cors = require('cors'); //to allow access from the frontend
 
 //to be able to read json format from post request
 app.use(express.json());
-app.use(cors()); //to allow access from the frontend
+
+
+app.use(cors({
+    origin:['https://requestappserver.herokuapp.com', 'http://localhost:5000']
+})); //to allow access from the frontend
 
 
 
