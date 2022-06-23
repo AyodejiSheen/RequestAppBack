@@ -1,42 +1,50 @@
+
 const express = require('express')
-const app = express();  //an instance of express.
 const cors = require('cors'); //to allow access from the frontend
-
-//to be able to read json format from post request
-app.use(express.json());
-
-
+const app = express();  //an instance of express.
 app.use(cors({
-    origin:['https://requestappserver.herokuapp.com', 'http://localhost:5000']
+    origin:'https://requestappserver.herokuapp.com'
 })); //to allow access from the frontend
 
 
 
-const dotenv = require('dotenv');
-dotenv.config({path: './config/config.env'});  //to have access to the enviroment variables
+require("dotenv").config(); // to switch to web hosting port or localhost port
 
 
-const PORT = process.env.PORT || 5000 //the port number specified in the env config
+
+//to be able to read json format from post request
+app.use(express.json());
+
 
 
 //importing the database models
 const db = require('./models')
 
 
-//importing the router
+
+//importing the routers
 const usersRouter = require('./routes/userRoutes');
 
 
 
+
+
+
+
+
+
+//creating the  routers middleware
 app.use('/user', usersRouter);
+
 
 
 
 
 //to connect to database when app starts
 db.sequelize.sync().then(() => {
+
     //to start listening to request at a port
-    app.listen(PORT, () => {
+    app.listen(process.env.PORT || 5000, () => {
     console.log("the server in running")
     })
 
