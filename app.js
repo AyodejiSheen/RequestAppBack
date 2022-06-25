@@ -2,8 +2,10 @@
 const express = require('express')
 const cors = require('cors'); //to allow access from the frontend
 const app = express();  //an instance of express.
-app.use(cors()); //to allow access from the frontend
 
+app.use(cors({
+    origin:['http://localhost:3002', 'https://requestapp.netlify.app']
+})); //to allow access from the frontend
 
 
 require("dotenv").config(); // to switch to web hosting port or localhost port
@@ -43,7 +45,7 @@ db.sequelize.sync().then(() => {
 
     //to start listening to request at a port
     app.listen(process.env.PORT || 5000, () => {
-    console.log("the server in running")
+    console.log("the server ")
     })
 
 })

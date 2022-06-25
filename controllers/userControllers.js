@@ -6,13 +6,6 @@ const bcrypt = require('bcryptjs') // a library to hash passwords
 //importing JWT library
 const { sign } = require('jsonwebtoken');
 
-
-//import middleware
-// const { ValidateToken } = require('../middleswares/Authmiddleware');
-
-//to verify JWT
-const { verify } = require('jsonwebtoken');
-
 //to send emails to reset password
 const nodemailer = require('nodemailer');
 
@@ -80,13 +73,21 @@ const login = async (req, res) => {
         } else {
             const user = await Users.findOne({ where: { id: finduser.id }, attributes: { exclude: ["password"] } });
             //to generate Token
-            const accessToken = sign({ email: user.email, id: user.id }, "secret", { expiresIn: '60m' });
+            const accessToken = sign({ user }, "secret", { expiresIn: '250m' });
             res.json({ token: accessToken, user }); //then you send the JWT token to the frontend as response when detail is verify
         }
 
     }
-
 }
+
+
+
+
+
+const auth = async (req, res) => {
+    res.json(req.user.user)
+}
+
 
 
 
@@ -105,5 +106,6 @@ const login = async (req, res) => {
 
 module.exports = {
     registration,
-    login
+    login,
+    auth
 }
