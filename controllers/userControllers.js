@@ -42,7 +42,8 @@ const registration = async (req, res) => {
                 username: user.username,
                 phone: user.phone,
                 gender: user.gender,
-                password: hash
+                password: hash,
+                about:user.about
             });
 
         }).catch((err) => {
@@ -73,7 +74,7 @@ const login = async (req, res) => {
         } else {
             const user = await Users.findOne({ where: { id: finduser.id }, attributes: { exclude: ["password"] } });
             //to generate Token
-            const accessToken = sign({ user }, "secret", { expiresIn: '250m' });
+            const accessToken = sign({ user }, "secret", { expiresIn: '30m' });
             res.json({ token: accessToken, user }); //then you send the JWT token to the frontend as response when detail is verify
         }
 
@@ -89,6 +90,21 @@ const auth = async (req, res) => {
 }
 
 
+
+const EditProfile = async (req, res) => {
+    let newdetails = req.body;
+
+    await Users.update({
+        firstname: newdetails.firstname,
+        lastname:newdetails.lastname,
+        email:newdetails.email,
+        phone:newdetails.phone,
+        about:newdetails.about
+    }, { where: { id: newdetails.id } });
+
+    res.json(res.statusCode);
+
+}
 
 
 
@@ -107,5 +123,6 @@ const auth = async (req, res) => {
 module.exports = {
     registration,
     login,
-    auth
+    auth,
+    EditProfile
 }

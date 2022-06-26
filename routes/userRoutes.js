@@ -13,9 +13,9 @@ const {ValidateToken} = require('../middleswares/Authmiddleware')
 
 
 router.post('/', usersController.registration )  //this route handle registration
-router.post('/login',  usersController.login )  //this route handle registration
-
-router.get('/auth', ValidateToken, usersController.auth )  //this route handle registration
+router.post('/login',  usersController.login )  //this route handle login
+router.get('/auth', ValidateToken, usersController.auth )  //this route handle auth 
+router.put('/edit', ValidateToken, usersController.EditProfile )  //this route handle edit profile
 
 
 

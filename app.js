@@ -4,7 +4,7 @@ const cors = require('cors'); //to allow access from the frontend
 const app = express();  //an instance of express.
 
 app.use(cors({
-    origin:['http://localhost:3002', 'https://requestapp.netlify.app']
+    origin:['http://localhost:3000', 'https://requestapp.netlify.app']
 })); //to allow access from the frontend
 
 
