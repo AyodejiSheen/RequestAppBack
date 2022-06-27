@@ -9,7 +9,13 @@ require("dotenv").config(); // to switch to web hosting port or localhost port
 
 //to be able to read json format from post request
 app.use(express.json());
-app.use(cors()); //to allow access from the frontend
+
+let corsOptions = {
+    origin:['https://requestapp.netlify.app/'],
+    optionSuccessStatus:200,
+};
+
+app.use(cors(corsOptions)); //to allow access from the frontend
 
 
 //importing the database models
