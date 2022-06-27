@@ -1,11 +1,7 @@
 
 const express = require('express')
-const cors = require('cors'); //to allow access from the frontend
 const app = express();  //an instance of express.
-
-app.use(cors({origin: 'https://requestapp.netlify.app'}));
- //to allow access from the frontend
-
+const cors = require('cors'); //to allow access from the frontend
 
 require("dotenv").config(); // to switch to web hosting port or localhost port
 
@@ -13,7 +9,7 @@ require("dotenv").config(); // to switch to web hosting port or localhost port
 
 //to be able to read json format from post request
 app.use(express.json());
-
+app.use(cors()); //to allow access from the frontend
 
 
 //importing the database models
