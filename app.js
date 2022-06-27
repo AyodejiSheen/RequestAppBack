@@ -11,7 +11,7 @@ require("dotenv").config(); // to switch to web hosting port or localhost port
 app.use(express.json());
 
 let corsOptions = {
-    origin:['https://requestapp.netlify.app/'],
+    origin:['https://requestapp.netlify.app/', 'http://localhost:3000'],
     optionSuccessStatus:200,
 };
 
