@@ -138,8 +138,8 @@ const resetLink = async (req, res) => {
             id: finduser.id
         }
         const token = sign(payload, "main secret", { expiresIn: '10m' });
-        const link = `https://requestapp.netlify.app/reset-password/${finduser.id}/${token}`;
-        // const link = `http://localhost:3000/reset-password/${finduser.id}/${token}`;
+        // const link = `https://requestapp.netlify.app/reset-password/${finduser.id}/${token}`;
+        const link = `http://localhost:3000/reset-password/${finduser.id}/${token}`;
 
         //to send link to the user email address
         let transporter = nodemailer.createTransport({
@@ -166,7 +166,8 @@ const resetLink = async (req, res) => {
                 res.json("Check your email for the link to reset your password")
             }
         });
-
+        
+        console.log(link)
         //email sending ends
 
     } else {
@@ -177,7 +178,7 @@ const resetLink = async (req, res) => {
 
 
 
-
+//to verify reset Password link
 const verifyLink = async (req, res) => {
     const { id, token } = req.params;
     let userId = await Users.findOne({ where: { id: id } })
@@ -186,8 +187,6 @@ const verifyLink = async (req, res) => {
             const validToken = sign(token, "main secret");
             if(validToken){
                 res.json({ verify: true });  //if token is valid else send error.message
-            }else{
-                res.json({error:"Invalid Link"})
             }
         } catch (error) {
             res.json({ error: error.message })
@@ -197,7 +196,16 @@ const verifyLink = async (req, res) => {
     }
 }
 
-
+//to reset password
+const resetPassword = async (req, res) => {
+    const { newPassword, id } = req.body;
+    console.log(req.body)
+    //to update the newpassword entered, 
+    bcrypt.hash(newPassword, 10).then((hash) => {
+        Users.update({ password: hash }, { where: { id: id } })  
+        res.json(res.statusCode)// to send the status code of the operation
+    });
+}
 
 
 
@@ -216,5 +224,6 @@ module.exports = {
     EditProfile,
     ChangePassword,
     resetLink,
-    verifyLink
+    verifyLink,
+    resetPassword
 }
