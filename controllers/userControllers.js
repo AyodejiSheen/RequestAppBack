@@ -138,8 +138,8 @@ const resetLink = async (req, res) => {
             id: finduser.id
         }
         const token = sign(payload, "main secret", { expiresIn: '10m' });
-        // const link = `https://requestapp.netlify.app/reset-password/${finduser.id}/${token}`;
-        const link = `http://localhost:3000/reset-password/${finduser.id}/${token}`;
+        const link = `https://requestapp.netlify.app/reset-password/${finduser.id}/${token}`;
+        // const link = `http://localhost:3000/reset-password/${finduser.id}/${token}`;
 
         //to send link to the user email address
         let transporter = nodemailer.createTransport({
