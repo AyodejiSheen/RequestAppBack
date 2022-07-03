@@ -25,6 +25,7 @@ const db = require('./models')
 
 //importing the routers
 const usersRouter = require('./routes/userRoutes');
+const requestsRouter = require('./routes/RequestRoutes');
 
 
 
@@ -36,6 +37,7 @@ const usersRouter = require('./routes/userRoutes');
 
 //creating the  routers middleware
 app.use('/user', usersRouter);
+app.use('/request', requestsRouter);
 
 
 

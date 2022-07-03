@@ -82,18 +82,14 @@ const login = async (req, res) => {
 }
 
 
-
-
 const auth = async (req, res) => {
-    res.json(req.user.user)
+    res.json(req.user.user);
 }
-
 
 
 const EditProfile = async (req, res) => {
     let data = req.body;
-
-    await Users.update({
+   let edit = await Users.update({
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
@@ -101,8 +97,11 @@ const EditProfile = async (req, res) => {
         about: data.about
     }, { where: { id: data.id } });
 
-    res.json(res.statusCode);
-
+    //to set a new JWT with the new information updated.
+    const user = await Users.findOne({ where: { id: data.id }, attributes: { exclude: ["password"] } });
+    //to generate Token
+    const accessToken = sign({ user }, "secret", { expiresIn: '30m' });
+    res.json({ token: accessToken, user }); //then you send the JWT token to the frontend as response when detail is verify
 }
 
 
@@ -111,7 +110,6 @@ const EditProfile = async (req, res) => {
 const ChangePassword = async (req, res) => {
     const data = req.body;
     const user = await Users.findByPk(req.user.user.id);
-    console.log(req.user)
     bcrypt.compare(data.oldPassword, user.password).then((match) => {
         if (!match) {
             res.json({ error: "Wrong old password" });  //if the password is wrong compare to the user password.... it will continue automatically if its matched
@@ -130,7 +128,6 @@ const ChangePassword = async (req, res) => {
 
 const resetLink = async (req, res) => {
     let {data}  = req.body;
-    console.log(data)
     let finduser = await Users.findOne({ where: { email: data } });
     if (finduser) {
         const payload = {
@@ -166,8 +163,6 @@ const resetLink = async (req, res) => {
                 res.json("Check your email for the link to reset your password")
             }
         });
-        
-        console.log(link)
         //email sending ends
 
     } else {
@@ -199,7 +194,6 @@ const verifyLink = async (req, res) => {
 //to reset password
 const resetPassword = async (req, res) => {
     const { newPassword, id } = req.body;
-    console.log(req.body)
     //to update the newpassword entered, 
     bcrypt.hash(newPassword, 10).then((hash) => {
         Users.update({ password: hash }, { where: { id: id } })  

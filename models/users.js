@@ -43,18 +43,18 @@ module.exports = (sequelize, DataTypes) => {
 
 
     //Linking the user table to the post table (Association)
-    // Users.associate = (models) => {
-    //     Users.hasMany(models.Posts, {   //i.e (userId will be in the post table) a user will have many post 
-    //         //adding properties
-    //         onDelete: "cascade" //i.e on delete of a post all the comments under it will also be deleted
-    //     });
+    Users.associate = (models) => {
+        Users.hasMany(models.Requests, {   //i.e (userId will be in the request table) a user will have many requests 
+            //adding properties
+            onDelete: "cascade" //i.e on delete of a user all the request under it will also be deleted
+        });
 
     //     //to link the users table to the Likes table (when liking a partiular post)
     //     Users.hasMany(models.Likes, {   //i.e (UserId will be in the Likes table through asociation) a user cal like many post
     //         //adding properties
     //         onDelete: "cascade" //i.e on delete of a post all the comments under it will also be deleted
     //     });
-    // }
+    }
 
 
 
