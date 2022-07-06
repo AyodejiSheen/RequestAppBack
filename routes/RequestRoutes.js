@@ -10,6 +10,7 @@ const {ValidateToken} = require('../middleswares/Authmiddleware')
 
 router.post('/', ValidateToken, RequestController.CreateRequest)
 router.get('/', RequestController.getAllRequests)
+router.get('/view/:requestId', ValidateToken, RequestController.viewRequest)
 
 
 

@@ -20,7 +20,7 @@ router.put('/changepassword', ValidateToken, usersController.ChangePassword )  /
 router.post('/resetlink', usersController.resetLink )  //this route handle sending reset password link
 router.get('/verify-resetlink/:id/:token', usersController.verifyLink )  //this route handle reset password link verification
 router.put('/reset-password', usersController.resetPassword )  //this route handle reset password
-
+router.get('/profile/:id', usersController.viewProfile) //to view user profile
 
 
 

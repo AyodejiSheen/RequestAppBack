@@ -1,4 +1,4 @@
-const { Requests } = require('../models') //to have an instance of the users table
+const { Requests } = require('../models') //to have an instance of the request table
 const bcrypt = require('bcryptjs') // a library to hash passwords
 
 //importing JWT library
@@ -25,11 +25,20 @@ const getAllRequests = async (req, res) => {
 }
 
 
+//to get each requests
+const viewRequest = async (req, res) => {
+    let id = req.params.requestId;
+    let request = await Requests.findByPk(id);
+    res.json(request);
+}
+
+
 
 
 module.exports ={
     CreateRequest,
-    getAllRequests
+    getAllRequests,
+    viewRequest
 };
 
 

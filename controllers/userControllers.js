@@ -1,6 +1,8 @@
 // creating the function for each of the users routes
 
 const { Users } = require('../models') //to have an instance of the users table
+const { Requests } = require('../models') //to have an instance of the request table
+
 const bcrypt = require('bcryptjs') // a library to hash passwords
 
 //importing JWT library
@@ -87,6 +89,9 @@ const auth = async (req, res) => {
 }
 
 
+
+
+
 const EditProfile = async (req, res) => {
     let data = req.body;
    let edit = await Users.update({
@@ -96,6 +101,8 @@ const EditProfile = async (req, res) => {
         phone: data.phone,
         about: data.about
     }, { where: { id: data.id } });
+
+    let editReq = await Requests.update({ email:data.email}, {where:{UserId : data.id}})
 
     //to set a new JWT with the new information updated.
     const user = await Users.findOne({ where: { id: data.id }, attributes: { exclude: ["password"] } });
@@ -202,7 +209,12 @@ const resetPassword = async (req, res) => {
 }
 
 
-
+//to view profile
+const viewProfile = async (req, res) => {
+    let {id} = req.params;
+    const user = await Users.findOne({where: {id : id}, attributes:{exclude:["password"]}})
+    res.json(user)
+}
 
 
 
@@ -219,5 +231,6 @@ module.exports = {
     ChangePassword,
     resetLink,
     verifyLink,
-    resetPassword
+    resetPassword,
+    viewProfile
 }
