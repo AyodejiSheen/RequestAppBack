@@ -49,11 +49,11 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: "cascade" //i.e on delete of a user all the request under it will also be deleted
         });
 
-    //     //to link the users table to the Likes table (when liking a partiular post)
-    //     Users.hasMany(models.Likes, {   //i.e (UserId will be in the Likes table through asociation) a user cal like many post
-    //         //adding properties
-    //         onDelete: "cascade" //i.e on delete of a post all the comments under it will also be deleted
-    //     });
+        //to link the users table to the notifications table (when accepting a partiular request)
+        Users.hasMany(models.Notifications, {   //i.e (UserId will be in the notification table through asociation) a user can have  many notification
+            //adding properties
+            onDelete: "cascade" //i.e on delete of a post all the comments under it will also be deleted
+        });
     }
 
 

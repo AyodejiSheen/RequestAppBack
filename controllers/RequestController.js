@@ -33,12 +33,21 @@ const viewRequest = async (req, res) => {
 }
 
 
+const acceptReq = async (req, res) => {
+    console.log(req.body);
+    let userid = req.body.userid;
+    let reqid = req.body.requestid;
+    await Requests.update({status:"Approved"}, {where:{id : reqid}});
+    res.json(res.statusCode)
+}
+
 
 
 module.exports ={
     CreateRequest,
     getAllRequests,
-    viewRequest
+    viewRequest,
+    acceptReq
 };
 
 

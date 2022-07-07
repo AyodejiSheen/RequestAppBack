@@ -55,12 +55,21 @@ module.exports = (sequelize, DataTypes) => {
             allowNullL: false,
         },
 
-
-
+        
+        
     });
+
+
+    //to link the request tabel to notification table
+    Requests.associate = (models) => {
+        Requests.hasMany(models.Notifications, {
+            onDelete:"cascade"
+        })
+    }
 
 
 
 
     return Requests;
 }
+  
