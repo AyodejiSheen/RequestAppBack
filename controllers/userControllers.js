@@ -10,6 +10,7 @@ const { sign } = require('jsonwebtoken');
 
 //to send emails to reset password
 const nodemailer = require('nodemailer');
+const {Notifications} = require('../models');
 
 
 
@@ -77,15 +78,22 @@ const login = async (req, res) => {
             const user = await Users.findOne({ where: { id: finduser.id }, attributes: { exclude: ["password"] } });
             //to generate Token
             const accessToken = sign({ user }, "secret", { expiresIn: '30m' });
-            res.json({ token: accessToken, user }); //then you send the JWT token to the frontend as response when detail is verify
+
+            const message = await Notifications.findAll({ where: { UserId: user.id } })
+
+            res.json({ token: accessToken, user, message }); //then you send the JWT token to the frontend as response when detail is verify
         }
 
     }
 }
 
 
+
+
+
 const auth = async (req, res) => {
-    res.json(req.user.user);
+    const message = await Notifications.findAll({ where: { UserId: req.user.user.id } })
+    res.json({user:req.user.user, message});
 }
 
 
@@ -94,7 +102,7 @@ const auth = async (req, res) => {
 
 const EditProfile = async (req, res) => {
     let data = req.body;
-   let edit = await Users.update({
+    let edit = await Users.update({
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
@@ -102,7 +110,7 @@ const EditProfile = async (req, res) => {
         about: data.about
     }, { where: { id: data.id } });
 
-    let editReq = await Requests.update({ email:data.email}, {where:{UserId : data.id}})
+    let editReq = await Requests.update({ email: data.email }, { where: { UserId: data.id } })
 
     //to set a new JWT with the new information updated.
     const user = await Users.findOne({ where: { id: data.id }, attributes: { exclude: ["password"] } });
@@ -134,7 +142,7 @@ const ChangePassword = async (req, res) => {
 
 
 const resetLink = async (req, res) => {
-    let {data}  = req.body;
+    let { data } = req.body;
     let finduser = await Users.findOne({ where: { email: data } });
     if (finduser) {
         const payload = {
@@ -164,7 +172,7 @@ const resetLink = async (req, res) => {
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
-                res.json({error: "server error"})
+                res.json({ error: "server error" })
             } else {
                 console.log('Email sent: ' + info.response);
                 res.json("Check your email for the link to reset your password")
@@ -173,7 +181,7 @@ const resetLink = async (req, res) => {
         //email sending ends
 
     } else {
-        res.json({error: "User not found"})
+        res.json({ error: "User not found" })
     }
 
 }
@@ -187,7 +195,7 @@ const verifyLink = async (req, res) => {
     if (userId) {
         try {
             const validToken = sign(token, "main secret");
-            if(validToken){
+            if (validToken) {
                 res.json({ verify: true });  //if token is valid else send error.message
             }
         } catch (error) {
@@ -203,7 +211,7 @@ const resetPassword = async (req, res) => {
     const { newPassword, id } = req.body;
     //to update the newpassword entered, 
     bcrypt.hash(newPassword, 10).then((hash) => {
-        Users.update({ password: hash }, { where: { id: id } })  
+        Users.update({ password: hash }, { where: { id: id } })
         res.json(res.statusCode)// to send the status code of the operation
     });
 }
@@ -211,8 +219,8 @@ const resetPassword = async (req, res) => {
 
 //to view profile
 const viewProfile = async (req, res) => {
-    let {id} = req.params;
-    const user = await Users.findOne({where: {id : id}, attributes:{exclude:["password"]}})
+    let { id } = req.params;
+    const user = await Users.findOne({ where: { id: id }, attributes: { exclude: ["password"] } })
     res.json(user)
 }
 

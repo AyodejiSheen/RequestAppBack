@@ -6,6 +6,7 @@ const { sign } = require('jsonwebtoken');
 
 //to send emails to reset password
 const nodemailer = require('nodemailer');
+const notifications = require('../models/notifications');
 
 
 
@@ -34,16 +35,15 @@ const viewRequest = async (req, res) => {
 
 
 const acceptReq = async (req, res) => {
-    console.log(req.body);
     let userid = req.body.userid;
     let reqid = req.body.requestid;
-    await Requests.update({status:"Approved"}, {where:{id : reqid}});
+    await Requests.update({ status: "Approved" }, { where: { id: reqid } });
     res.json(res.statusCode)
 }
 
 
 
-module.exports ={
+module.exports = {
     CreateRequest,
     getAllRequests,
     viewRequest,

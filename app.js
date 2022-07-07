@@ -26,7 +26,7 @@ const db = require('./models')
 //importing the routers
 const usersRouter = require('./routes/userRoutes');
 const requestsRouter = require('./routes/RequestRoutes');
-
+const notifyRouter = require('./routes/noteRoutes')
 
 
 
@@ -38,6 +38,7 @@ const requestsRouter = require('./routes/RequestRoutes');
 //creating the  routers middleware
 app.use('/user', usersRouter);
 app.use('/request', requestsRouter);
+app.use('/notify', notifyRouter)
 
 
 
