@@ -29,16 +29,48 @@ const getAllRequests = async (req, res) => {
 //to get each requests
 const viewRequest = async (req, res) => {
     let id = req.params.requestId;
-    let request = await Requests.findByPk(id);
-    res.json(request);
+    let request = await Requests.findByPk(id)
+    if(!request){
+        res.json({error:"Invalid Request Id"})
+    }else{
+        res.json(request)
+    }
 }
 
 
 const acceptReq = async (req, res) => {
     let userid = req.body.userid;
     let reqid = req.body.requestid;
-    await Requests.update({ status: "Approved" }, { where: { id: reqid } });
-    res.json(res.statusCode)
+    let accept = await Requests.update({ status: "Approved" }, { where: { id: reqid, acceptId:userid } });
+    if(!accept){
+        res.json({error:"Try Again"})
+    }else{
+        res.json(res.statusCode)
+    }
+}
+
+
+const accpetedRed = async (req, res) => {
+    let userId = req.params.Id;
+    let request = await Requests.findAll({where: { acceptId : userId}});
+    if(!request){
+        res.json({error:"Invalid Id"})
+    }else{
+        res.json(request)
+    }
+
+}
+
+
+const personalReq = async (req, res) => {
+    let userId = req.params.Id;
+    let request = await Requests.findAll({where: { UserId : userId}});
+    if(!request){
+        res.json({error:"Invalid Id"})
+    }else{
+        res.json(request)
+    }
+
 }
 
 
@@ -47,7 +79,9 @@ module.exports = {
     CreateRequest,
     getAllRequests,
     viewRequest,
-    acceptReq
+    acceptReq,
+    accpetedRed,
+    personalReq
 };
 
 

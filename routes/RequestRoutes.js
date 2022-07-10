@@ -12,7 +12,8 @@ router.post('/', ValidateToken, RequestController.CreateRequest)
 router.get('/', RequestController.getAllRequests)
 router.get('/view/:requestId', ValidateToken, RequestController.viewRequest)
 router.put('/accept-request', ValidateToken, RequestController.acceptReq)
-
+router.get('/accepted-requests/:Id', ValidateToken, RequestController.accpetedRed)
+router.get('/personal-requests/:Id', ValidateToken, RequestController.personalReq)
 
 
 

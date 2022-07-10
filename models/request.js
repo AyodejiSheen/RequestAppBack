@@ -55,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNullL: false,
         },
 
+        acceptId: {
+            type:DataTypes.STRING,
+        }
+
         
         
     });
