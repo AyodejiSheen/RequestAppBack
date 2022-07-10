@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         acceptId: {
-            type:DataTypes.STRING,
+            type:DataTypes.INTEGER,
         }
 
         
