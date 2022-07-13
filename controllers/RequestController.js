@@ -94,6 +94,17 @@ const editRequest = async (req, res) => {
 }
 
 
+const deleteReq = async (req, res) => {
+    let id = req.params.id;
+    let del = await Requests.destroy({where:{id:id}})
+
+    if(!del){
+        res.json({error : "The request cannot be delete"})
+    }else{
+        res.json(res.statusCode)
+    }
+}
+
 
 
 
@@ -105,7 +116,8 @@ module.exports = {
     acceptReq,
     accpetedRed,
     personalReq,
-    editRequest
+    editRequest,
+    deleteReq
 };
 
 
