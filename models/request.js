@@ -55,6 +55,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNullL: false,
         },
 
+        gender: {
+            type: DataTypes.STRING,
+            allowNull: false, //it cannot be empty to know the username of the person making the post
+        },
+
         acceptId: {
             type:DataTypes.INTEGER,
         }
